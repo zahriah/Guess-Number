@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     EditText number;
     TextView answer;
     Button guessButton, resetButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,53 +24,44 @@ public class MainActivity extends AppCompatActivity {
         guessButton = findViewById(R.id.guess_button);
         resetButton = findViewById(R.id.reset_button);
         initialize();
-
     }
 
     public void guess(View view) {
-        if(number.getText().toString().equals("")){
-            Toast.makeText(MainActivity.this, "Please enter your answer.",Toast.LENGTH_LONG).show();
-        }
-
-        else {
+        if (number.getText().toString().equals("")) {
+            Toast.makeText(MainActivity.this, "Please enter your answer.", Toast.LENGTH_LONG).show();
+        } else {
             guessNumber = Integer.parseInt(number.getText().toString());
             if (guessNumber == computerNum) {
                 answer.setText("Congratulation!!!");
             } else if (guessNumber < computerNum) {
-                count--;
                 Toast.makeText(MainActivity.this, "The Number is Too Low", Toast.LENGTH_LONG).show();
-                number.getText().clear();
-                if (count != 0) {
-                    answer.setText("You have " + count + " more chances");
-                } else {
-                    gameOver();
-                }
+                gameOver();
             } else {
-                count--;
                 Toast.makeText(MainActivity.this, "The Number is Too High", Toast.LENGTH_LONG).show();
-                number.getText().clear();
-                if (count != 0) {
-                    answer.setText("You have " + count + " more chances");
-                } else {
-                    gameOver();
-                }
+                gameOver();
             }
         }
     }
 
     private void gameOver() {
-        answer.setText("The answer is " + computerNum);
-        guessButton.setVisibility(View.GONE);
-        resetButton.setVisibility(View.VISIBLE);
+        count--;
+        number.getText().clear();
+        if (count != 0) {
+            answer.setText("You have " + count + " more chances");
+        } else {
+            answer.setText("The answer is " + computerNum);
+            guessButton.setVisibility(View.GONE);
+            resetButton.setVisibility(View.VISIBLE);
+        }
     }
 
     public void reset(View view) {
         initialize();
     }
 
-    private void initialize(){
+    private void initialize() {
         count = 3;
-        computerNum = (int)(Math.random() * 100);
+        computerNum = (int) (Math.random() * 100);
         guessButton.setVisibility(View.VISIBLE);
         resetButton.setVisibility(View.GONE);
         answer.setText("Good Luck!!!");
